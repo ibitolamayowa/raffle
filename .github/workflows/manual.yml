@@ -48,13 +48,13 @@ jobs:
       - name: Testing with create
         if: ${{ steps.version.outputs.OUTPUT }} == "Create"
         with:
-          run: |
+          script: |
             echo "Creating the lamda"
           
       - name: Testing with update
         if: ${{ steps.version.outputs.OUTPUT }} == "Update"
         with:
-          run: |
+          script: |
             echo "Updating the lamda"
           
       - name: Testing with normal if
