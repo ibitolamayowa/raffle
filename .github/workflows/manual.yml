@@ -45,5 +45,10 @@ jobs:
       - name: Use conditional value
         run: echo "${{ steps.condval.outputs.value }}"
          
+      - name: Testing with normal if
+        if: ${{ steps.version.outputs.OUTPUT }} == 'hello'
+        run: |
+          echo "nice" 
+          ls
         
       
