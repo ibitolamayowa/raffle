@@ -46,12 +46,12 @@ jobs:
         run: echo "${{ steps.condval.outputs.value }}"
 
       - name: Testing with create
-        if: ${{ steps.version.outputs.OUTPUT == "Create" }}
+        if: ${{ steps.version.outputs.OUTPUT }} == "Create"
         run: |
           echo "Creating the lamda"
           
       - name: Testing with update
-        if: ${{ steps.version.outputs.OUTPUT == "Update" }}
+        if: ${{ steps.version.outputs.OUTPUT }} == "Update"
         run: |
           echo "Updating the lamda"
           
