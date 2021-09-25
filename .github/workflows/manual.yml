@@ -15,21 +15,27 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-
+      - uses: actions/github-script@v3
+      
       - name: Listing normally
         run: |
           ls
           
       - name: Using Output command
-        run: |
-          OUTPUT= echo "::set-output name=OUTPUT::$(echo "Update")"
+        uses: actions/github-script@v3
         id: version
+        with:
+          script: return "Update"
+          result-encoding: string  
+#        run: |
+#          OUTPUT= echo "::set-output name=OUTPUT::$(echo "Update")"
+        
         env:
           OUTPUT: ${{ env.OUTPUT }}
         
       - name: Testing environmental
         run: |
-          echo ${{ steps.version.outputs.OUTPUT }}
+          echo ${{ steps.version.outputs.result }}
           
       - name: Testing environmental 2
         run: |
@@ -38,7 +44,7 @@ jobs:
       - uses: haya14busa/action-cond@v1
         id: condval
         with:
-          cond: ${{ steps.version.outputs.OUTPUT == 'Update Command' }}
+          cond: ${{ steps.version.outputs.result == 'Update Command' }}
           if_true: "Create"
           if_false: "Update"
 
@@ -46,18 +52,14 @@ jobs:
         run: echo "${{ steps.condval.outputs.value }}"
 
       - name: Testing with create
-        if: ${{ steps.version.outputs.OUTPUT }} == "Create"
-        uses: actions/github-script@v3
-        with:
-          script: |
-            echo "Creating the lamda"
+        if: ${{ steps.version.outputs.result }} == "Create"
+        run: |
+          echo "Creating the lamda"
           
       - name: Testing with update
-        if: ${{ steps.version.outputs.OUTPUT }} == "Update"
-        uses: actions/github-script@v3
-        with:
-          script: |
-            echo "Updating the lamda"
+        if: ${{ steps.version.outputs.result }} == "Update"
+        run: |
+          echo "Updating the lamda"
           
       - name: Testing with normal if
         if: ${{ steps.version.outputs.OUTPUT }} == "hello"
