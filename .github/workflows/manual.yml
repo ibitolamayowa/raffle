@@ -38,7 +38,7 @@ jobs:
       - uses: haya14busa/action-cond@v1
         id: condval
         with:
-          cond: ${{ gsteps.version.outputs.OUTPUT == 'hello' }}
+          cond: ${{ steps.version.outputs.OUTPUT == 'hello' }}
           if_true: "It works"
           if_false: "Doesn't work"
 
