@@ -22,7 +22,7 @@ jobs:
           
       - name: Using Output command
         run: |
-          OUTPUT= echo "::set-output name=OUTPUT::$(ls)"
+          OUTPUT= echo "::set-output name=OUTPUT::$(echo "hello")"
         id: version
         env:
           OUTPUT: ${{ env.OUTPUT }}
