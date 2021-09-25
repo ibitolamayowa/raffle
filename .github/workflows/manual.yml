@@ -47,12 +47,14 @@ jobs:
 
       - name: Testing with create
         if: ${{ steps.version.outputs.OUTPUT }} == "Create"
+        uses: actions/github-script@v3
         with:
           script: |
             echo "Creating the lamda"
           
       - name: Testing with update
         if: ${{ steps.version.outputs.OUTPUT }} == "Update"
+        uses: actions/github-script@v3
         with:
           script: |
             echo "Updating the lamda"
