@@ -16,6 +16,19 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Install yarn dependencies and build project
+      - name: Listing normally
         run: |
           ls
+          
+      - name: Using Output command
+        run: |
+          OUTPUT= echo "::set-output name=OUTPUT::$(ls)"
+        id: version
+        env:
+          OUTPUT: ${{ env.OUTPUT }}
+        
+      - name: Testing environmental
+        run: |
+          echo ${{ steps.version.outputs.OUTPUT }}
+          echo ${{ env.OUTPUT }}
+      
