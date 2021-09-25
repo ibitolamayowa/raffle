@@ -35,25 +35,27 @@ jobs:
         run: |
           echo ${{ env.OUTPUT }}
           
-#      - uses: haya14busa/action-cond@v1
-#        id: condval
-#        with:
-#          cond: ${{ steps.version.outputs.OUTPUT == 'Update Command' }}
-#          if_true: "Create"
-#          if_false: "Update"
+      - uses: haya14busa/action-cond@v1
+        id: condval
+        with:
+          cond: ${{ steps.version.outputs.OUTPUT == 'Update Command' }}
+          if_true: "Create"
+          if_false: "Update"
 
       - name: Use conditional value
         run: echo "${{ steps.condval.outputs.value }}"
 
       - name: Testing with create
         if: ${{ steps.version.outputs.OUTPUT }} == "Create"
-        run: |
-          echo "Creating the lamda"
+        with:
+          run: |
+            echo "Creating the lamda"
           
       - name: Testing with update
         if: ${{ steps.version.outputs.OUTPUT }} == "Update"
-        run: |
-          echo "Updating the lamda"
+        with:
+          run: |
+            echo "Updating the lamda"
           
       - name: Testing with normal if
         if: ${{ steps.version.outputs.OUTPUT }} == "hello"
