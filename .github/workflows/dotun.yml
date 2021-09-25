@@ -1,0 +1,51 @@
+name: Test Pipeline
+
+on:
+  # Triggers the workflow on push or pull request events but for the dev branch
+  push:
+    branches: [DOTUN]
+
+  # Allows you to run this workflow manually from the Actions tabs
+  workflow_dispatch:
+
+jobs:
+  test:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+ 
+      - name: Confirming if the Function Exists
+        run: |
+          OUTPUT= echo "::set-output name=OUTPUT::$(An error occurred (ResourceNotFoundException) when calling the UpdateFunctionCode operation: Function not found: arn:aws:lambda:***:***:function:Staging-Flex-staging)"
+        id: version
+        env:
+          OUTPUT: ${{ env.OUTPUT }}
+        
+      - name: Result of the previous job
+        run: |
+          echo ${{ steps.version.outputs.OUTPUT }}       
+        
+      - name: Conditional statement to either Create or Update
+        uses: haya14busa/action-cond@v1
+        id: condval
+        with:
+          cond: ${{ steps.version.outputs.OUTPUT == 'An error occurred (ResourceNotFoundException) when calling the UpdateFunctionCode operation: Function not found: arn:aws:lambda:***:***:function:Staging-Flex-staging' }}
+          if_true: "Create"
+          if_false: "Update"
+
+      - name: Decision made
+        run: echo "${{ steps.condval.outputs.value }}"
+
+      - name: Creating and Updating
+        if: ${{ steps.condval.outputs.value == 'Create' }} 
+        run: |
+          aws lambda create-function --function-name=Staging-Flex-${BASE_BRANCH_NAME}
+          aws lambda update-function-code --function-name=Staging-Flex-${BASE_BRANCH_NAME} --zip-file=fileb://deploy.zip
+          
+      - name: Just Updating
+        if: ${{ steps.condval.outputs.value == 'Update' }} 
+        run: |
+          aws lambda update-function-code --function-name=Staging-Flex-${BASE_BRANCH_NAME} --zip-file=fileb://deploy.zip
+               
