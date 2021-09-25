@@ -38,7 +38,7 @@ jobs:
       - uses: haya14busa/action-cond@v1
         id: condval
         with:
-          cond: ${{ steps.version.outputs.OUTPUT == 'hello' }}
+          cond: ${{ steps.version.outputs.OUTPUT == 'Update Command' }}
           if_true: "Create"
           if_false: "Update"
 
