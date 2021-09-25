@@ -22,7 +22,7 @@ jobs:
           
       - name: Using Output command
         run: |
-          OUTPUT= echo "::set-output name=OUTPUT::$(echo "Update Command")"
+          OUTPUT= echo "::set-output name=OUTPUT::$(echo "Update")"
         id: version
         env:
           OUTPUT: ${{ env.OUTPUT }}
@@ -35,23 +35,23 @@ jobs:
         run: |
           echo ${{ env.OUTPUT }}
           
-      - uses: haya14busa/action-cond@v1
-        id: condval
-        with:
-          cond: ${{ steps.version.outputs.OUTPUT == 'Update Command' }}
-          if_true: "Create"
-          if_false: "Update"
+#      - uses: haya14busa/action-cond@v1
+#        id: condval
+#        with:
+#          cond: ${{ steps.version.outputs.OUTPUT == 'Update Command' }}
+#          if_true: "Create"
+#          if_false: "Update"
 
       - name: Use conditional value
         run: echo "${{ steps.condval.outputs.value }}"
 
       - name: Testing with create
-        if: ${{ steps.condval.outputs.value }} == 'Create'
+        if: ${{ steps.version.outputs.OUTPUT }} == Create
         run: |
           echo "Creating the lamda"
           
       - name: Testing with update
-        if: ${{ steps.condval.outputs.value }} == 'Update'
+        if: ${{ steps.version.outputs.OUTPUT }} == Update
         run: |
           echo "Updating the lamda"
           
