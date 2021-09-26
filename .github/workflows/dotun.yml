@@ -31,7 +31,7 @@ jobs:
         uses: haya14busa/action-cond@v1
         id: condval
         with:
-          cond: ${{ steps.version.outputs.OUTPUT == 'An error occurred (ResourceNotFoundException) when calling the UpdateFunctionCode operation: Function not found: arn:aws:lambda:***:***:function:Staging-Flex-staging' }}
+          cond: "${{ steps.version.outputs.OUTPUT == 'An error occurred (ResourceNotFoundException) when calling the UpdateFunctionCode operation: Function not found: arn:aws:lambda:***:***:function:Staging-Flex-staging' }}"
           if_true: "Create"
           if_false: "Update"
 
@@ -39,7 +39,7 @@ jobs:
         run: echo "${{ steps.condval.outputs.value }}"
 
       - name: Creating and Updating
-        if: ${{ steps.condval.outputs.value == 'Create' }} 
+        if: ${{ steps.condval.outputs.value == "Create:" }} 
         run: |
           aws lambda create-function --function-name=Staging-Flex-${BASE_BRANCH_NAME}
           aws lambda update-function-code --function-name=Staging-Flex-${BASE_BRANCH_NAME} --zip-file=fileb://deploy.zip
