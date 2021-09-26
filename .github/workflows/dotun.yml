@@ -18,7 +18,7 @@ jobs:
  
       - name: Confirming if the Function Exists
         run: |
-          OUTPUT= echo "::set-output name=OUTPUT::$(An error occurred (ResourceNotFoundException) when calling the UpdateFunctionCode operation: Function not found: arn:aws:lambda:***:***:function:Staging-Flex-staging)"
+          OUTPUT= echo "::set-output name=OUTPUT::$(aws lambda update-function-code --function-name=Staging-Flex-${BASE_BRANCH_NAME} --zip-file=fileb://deploy.zip)"
         id: version
         env:
           OUTPUT: ${{ env.OUTPUT }}
